@@ -503,12 +503,21 @@ require('lazy').setup({
 
       -- Setup Swift SourceKit LSP (not available using Mason)
       require('lspconfig').sourcekit.setup {
-        capabilities = {
+        cmd = { 'sourcekit-lsp' },
+        filetypes = { 'swift', 'objective-c', 'objective-cpp' },
+        root_dir = require('lspconfig.util').root_pattern('Package.swift', '.git'),
+        capabilities = vim.tbl_deep_extend('force', {}, capabilities, {
           workspace = {
             didChangeWatchedFiles = {
               dynamicRegistration = true,
             },
           },
+        }),
+        flags = {
+          debounce_text_changes = 150,
+        },
+        init_options = {
+          timeoutSeconds = 20,
         },
       }
     end,
@@ -592,6 +601,7 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
     },
     config = function()
       -- See `:help cmp`
@@ -803,6 +813,9 @@ vim.cmd [[
         autocmd VimLeave * set guicursor=a:ver1
     augroup END
 ]]
+
+-- LSP Debug
+-- vim.lsp.set_log_level 'debug'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
