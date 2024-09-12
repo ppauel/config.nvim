@@ -6,6 +6,9 @@
 
 --]]
 
+-- Disable translation
+vim.env.LANG = 'en'
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -469,8 +472,7 @@ require('lazy').setup({
             },
           },
         },
-        -- ts_ls = {},
-        tsserver = {},
+        ts_ls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -492,9 +494,6 @@ require('lazy').setup({
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
-            if server_name == 'tsserver' then
-              server_name = 'ts_ls'
-            end
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
@@ -611,6 +610,8 @@ require('lazy').setup({
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+      local ELLIPSIS_CHAR = '…'
+      local MAX_LABEL_WIDTH = 20
       luasnip.config.setup {}
 
       cmp.setup {
