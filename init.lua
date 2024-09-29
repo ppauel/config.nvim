@@ -731,7 +731,21 @@ require('lazy').setup({
       --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
+      statusline.setup {
+        use_icons = vim.g.have_nerd_font,
+        set_vim_settings = false,
+      }
+
+      -- Disable mini.statusline for neo-tree
+      local disable_mini_statusline = function(args)
+        local ft = vim.bo[args.buf].filetype
+        if ft == 'neo-tree' then
+          vim.b[args.buf].ministatusline_disable = true
+          vim.opt_local.statusline = '' -- This ensures no statusline is shown
+        end
+      end
+
+      vim.api.nvim_create_autocmd('FileType', { callback = disable_mini_statusline })
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
@@ -777,11 +791,11 @@ require('lazy').setup({
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
 
-  -- require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
+  -- require 'kickstart.plugins.debug',
+  -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
