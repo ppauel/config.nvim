@@ -516,12 +516,6 @@ require('lazy').setup({
             },
           },
         }),
-        flags = {
-          debounce_text_changes = 150,
-        },
-        init_options = {
-          timeoutSeconds = 20,
-        },
       }
     end,
   },
