@@ -440,6 +440,8 @@ require('lazy').setup({
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      local lspconfig = require 'lspconfig'
+
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -472,7 +474,13 @@ require('lazy').setup({
             },
           },
         },
-        ts_ls = {},
+        ts_ls = {
+          root_dir = lspconfig.util.root_pattern 'package.json',
+          single_file_support = false,
+        },
+        denols = {
+          root_dir = lspconfig.util.root_pattern('deno.json', 'deno.jsonc'),
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -499,7 +507,7 @@ require('lazy').setup({
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for tsserver)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            lspconfig[server_name].setup(server)
           end,
         },
       }
