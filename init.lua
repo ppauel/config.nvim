@@ -458,8 +458,20 @@ require('lazy').setup({
         -- sourcekit = {},
         svelte = {},
         clangd = {},
+        prismals = {},
+        cssls = {},
         pyright = {},
         rust_analyzer = {},
+        tinymist = {
+          single_file_support = true,
+          root_dir = function()
+            return vim.fn.getcwd()
+          end,
+          offset_encoding = 'utf-8',
+          settings = {
+            -- exportPdf = 'onSave',
+          },
+        },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -476,7 +488,11 @@ require('lazy').setup({
         },
         ts_ls = {
           root_dir = lspconfig.util.root_pattern 'package.json',
-          single_file_support = false,
+          filetypes = {
+            'javascript',
+            'typescript',
+            'vue',
+          },
         },
         denols = {
           root_dir = lspconfig.util.root_pattern('deno.json', 'deno.jsonc'),
@@ -773,15 +789,16 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'css', 'scss', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
         enable = true,
+        disable = { 'latex' },
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
+        additional_vim_regex_highlighting = { 'ruby', 'latex', 'markdown' },
       },
       indent = { enable = true, disable = { 'ruby' } },
     },

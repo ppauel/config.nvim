@@ -44,10 +44,12 @@ return {
         hide_gitignored = true,
         hide_by_name = {
           '.git',
-          '.DS_Store',
+          'node_modules',
           'thumbs.db',
         },
-        never_show = {},
+        never_show = {
+          '.DS_Store',
+        },
       },
       window = {
         mappings = {
